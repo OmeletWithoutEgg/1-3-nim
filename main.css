@@ -1,0 +1,11 @@
+button {
+	width: 150px;
+	height:100px;
+	font-size: 25px;
+}
+.stone {
+	width: 80px;
+}
+.text {
+	font-size: 64px;
+}
