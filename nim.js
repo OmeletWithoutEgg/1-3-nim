@@ -43,7 +43,7 @@ function playerTake(row) {
 
 function comCalc(arr) {
 	let xor_sum = 0;
-	for(let i = 0; i < arr.length; i++) xor_sum ^= arr[i]%playerLim;
+	for(let i = 0; i < arr.length; i++) xor_sum ^= arr[i]%(playerLim+1);
 	let moves = [];
 	if(xor_sum == 0) {
 		for(let i = 0; i < arr.length; i++) for(let j = 1; j <= playerLim && j <= arr[i]; j++) {
@@ -91,7 +91,7 @@ function comTake() {
 }
 
 function showRule() {
-	window.open("https://hackmd.io/Wolwkk29QhWdPLOjvpcepQ");
+	window.open("README.md");
 }
 
 function showTuto() {
@@ -105,18 +105,31 @@ function getHint() {
 	alert(arr[m.row] + " " + m.cnt);
 }
 
-function init(n,C) {
+function cls() {
+	for(let i = 0; i < arr.length; i++) {
+		for(let j = 0; j < arr[i]; j++) $(`#stone-${i}-${j}`).remove();
+		$(`#row${i}`).remove();
+		$(`#cnt${i}`).remove();
+	}
+	$(`button`).remove();
+	$(`br`).remove();
 	arr = []
+	init(6,9);
+}
+
+function init(n,C) {
+
 	let sum = 0;
 	for(let i = 0; i < n-1; i++) {
 		let x = rand(1,C);
 		arr.push(x);
-		sum ^= x%playerLim;
+		sum ^= x%(playerLim+1);
 	}
 	while(arr.length < n) {
 		let x = rand(1,C);
-		if(((x%playerLim)^sum) != 0) arr.splice(rand(0,arr.length), 0, x);
+		if(((x%(playerLim+1))^sum) != 0) arr.splice(rand(0,arr.length), 0, x);
 	}
+	
 	for(let i = 0; i < n; i++) {
 		$(`body`).append(`<span class="badge badge-pill badge-success" id="cnt${i}" style="font-size: 40px">${arr[i]}</span>`);
 		let bgstyle = i&1 ? "badge-light" : "badge-dark";
@@ -126,8 +139,8 @@ function init(n,C) {
 	}
 	$(`body`).append(`
 		<!-- <button id="init" class="btn btn-info" style="font-size: 25px" onclick="customInit()"> Init </button> -->
-		<button id="reset" class="btn btn-info" style="font-size: 25px" onclick="location.reload()"> Reset </button>
-		<!-- <button id="rules" class="btn btn-info" style="font-size: 25px" onclick="showRule()"> Rules </button> -->
+		<button id="reset" class="btn btn-info" style="font-size: 25px" onclick="cls()"> Reset </button>
+		<button id="rules" class="btn btn-info" style="font-size: 25px" onclick="showRule()"> Rules </button>
 		<button id="hint"  class="btn btn-info" style="font-size: 25px" onclick="getHint()"> Hint </button>
 		<!-- <button id="tutor" class="btn btn-info" style="font-size: 25px" onclick="showTuto()"> Tutorial </button> -->
 		<button id="ready" class="btn btn-info" style="font-size: 25px" onclick="comTake()"> OK! </button>
